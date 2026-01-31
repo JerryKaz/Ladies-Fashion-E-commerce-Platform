@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATELIER LUXE - Premium Women's Fashion & Accessories</title>
+    <meta name="description" content="Discover sophisticated women's clothing, luxury handbags, and curated accessories. Timeless elegance meets modern sophistication.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.2.4/pixi.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ivory: #F8F6F0;
+            --charcoal: #2C2C2C;
+            --burgundy: #8B2635;
+            --taupe: #D4C4B0;
+            --white: #FFFFFF;
+            --shadow: rgba(44, 44, 44, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--ivory);
+            color: var(--charcoal);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(248, 246, 240, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--charcoal);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--charcoal);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--burgundy);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--burgundy);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .cart-icon {
+            position: relative;
+            background: var(--burgundy);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .cart-icon:hover {
+            background: var(--charcoal);
+            transform: translateY(-2px);
+        }
+
+        .cart-count {
+            background: var(--white);
+            color: var(--burgundy);
+            border-radius: 50%;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--ivory) 0%, var(--taupe) 100%);
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('resources/hero-boutique.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            color: var(--charcoal);
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--charcoal);
+            margin-bottom: 2rem;
+            font-weight: 300;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--charcoal);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--burgundy);
+            color: var(--white);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .cta-button:hover {
+            background: var(--charcoal);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        /* Featured Products */
+        .featured-section {
+            padding: 6rem 2rem;
+            background: var(--white);
+        }
+
+        .section-container {
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--charcoal);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--charcoal);
+            margin-bottom: 4rem;
+            font-weight: 300;
+        }
+
+        .products-carousel {
+            margin-bottom: 4rem;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px var(--shadow);
+            transition: all 0.3s ease;
+            margin: 0 1rem;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px var(--shadow);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--charcoal);
+        }
+
+        .product-category {
+            color: var(--burgundy);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--charcoal);
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            background: var(--burgundy);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background: var(--charcoal);
+            transform: translateY(-2px);
+        }
+
+        /* Brand Story */
+        .brand-story {
+            padding: 6rem 2rem;
+            background: var(--ivory);
+        }
+
+        .story-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .story-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 2rem;
+            color: var(--charcoal);
+        }
+
+        .story-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: var(--charcoal);
+        }
+
+        .story-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px var(--shadow);
+        }
+
+        /* Newsletter */
+        .newsletter {
+            padding: 4rem 2rem;
+            background: var(--charcoal);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .newsletter h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .newsletter-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--white);
+            color: var(--charcoal);
+        }
+
+        .newsletter-button {
+            background: var(--burgundy);
+            color: var(--white);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-button:hover {
+            background: var(--white);
+            color: var(--burgundy);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--charcoal);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--charcoal);
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .story-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .hero-content {
+                padding: 0 1rem;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Splide Customization */
+        .splide__arrow {
+            background: var(--burgundy);
+            opacity: 0.8;
+        }
+
+        .splide__arrow:hover {
+            opacity: 1;
+        }
+
+        .splide__pagination__page.is-active {
+            background: var(--burgundy);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">ATELIER LUXE</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="admin.html">Admin</a></li>
+            </ul>
+            <a href="cart.html" class="cart-icon">
+                Cart <span class="cart-count" id="cartCount">0</span>
+            </a>
+            <button class="mobile-menu-toggle">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Timeless Elegance</h1>
+            <h2 class="hero-subtitle">Curated Fashion for the Modern Woman</h2>
+            <p class="hero-description">
+                Discover sophisticated clothing, luxury handbags, and curated accessories that transcend trends. 
+                Each piece is carefully selected for its exceptional craftsmanship and timeless appeal.
+            </p>
+            <a href="products.html" class="cta-button">Explore Collection</a>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured-section">
+        <div class="section-container">
+            <h2 class="section-title fade-in">Featured Collection</h2>
+            <p class="section-subtitle fade-in">Handpicked pieces that define sophisticated style</p>
+            
+            <div class="splide products-carousel" id="featuredCarousel">
+                <div class="splide__track">
+                    <ul class="splide__list" id="featuredProducts">
+                        <!-- Products will be loaded dynamically -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Story -->
+    <section class="brand-story">
+        <div class="story-container">
+            <div class="story-content fade-in">
+                <h2>Crafted with Purpose</h2>
+                <p>
+                    ATELIER LUXE was born from a belief that fashion should be both beautiful and meaningful. 
+                    We curate collections that celebrate exceptional craftsmanship, sustainable practices, 
+                    and timeless design that transcends seasonal trends.
+                </p>
+                <p>
+                    Each piece in our collection tells a story of skilled artisans, premium materials, 
+                    and attention to detail. From the stitching on a handbag to the drape of a dress, 
+                    every element is considered and purposeful.
+                </p>
+                <p>
+                    We believe in fashion that empowers, that makes you feel confident and authentic. 
+                    Welcome to a world where style meets substance, where every choice is a statement 
+                    of refined taste and conscious consumption.
+                </p>
+            </div>
+            <div class="fade-in">
+                <img src="resources/model-coat.jpg" alt="Elegant fashion model" class="story-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <h3>Stay Connected</h3>
+        <p>Be the first to discover new arrivals and exclusive collections</p>
+        <form class="newsletter-form" id="newsletterForm">
+            <input type="email" class="newsletter-input" placeholder="Enter your email address" required>
+            <button type="submit" class="newsletter-button">Subscribe</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 ATELIER LUXE. All rights reserved. Crafted with care for the modern woman.</p>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeAnimations();
+            initializeCarousel();
+            loadFeaturedProducts();
+            updateCartCount();
+        });
+
+        function initializeAnimations() {
+            // Hero animations
+            anime.timeline({
+                easing: 'easeOutExpo',
+                duration: 1000
+            })
+            .add({
+                targets: '.hero-title',
+                opacity: [0, 1],
+                translateY: [30, 0],
+                delay: 500
+            })
+            .add({
+                targets: '.hero-subtitle',
+                opacity: [0, 1],
+                translateY: [30, 0],
+                delay: 200
+            }, '-=800')
+            .add({
+                targets: '.hero-description',
+                opacity: [0, 1],
+                translateY: [30, 0],
+                delay: 300
+            }, '-=600')
+            .add({
+                targets: '.cta-button',
+                opacity: [0, 1],
+                translateY: [30, 0],
+                scale: [0.9, 1],
+                delay: 400
+            }, '-=400');
+
+            // Scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        function initializeCarousel() {
+            new Splide('#featuredCarousel', {
+                type: 'loop',
+                perPage: 3,
+                perMove: 1,
+                gap: '2rem',
+                autoplay: true,
+                interval: 4000,
+                pauseOnHover: true,
+                breakpoints: {
+                    768: {
+                        perPage: 1,
+                        gap: '1rem'
+                    },
+                    1024: {
+                        perPage: 2,
+                        gap: '1.5rem'
+                    }
+                }
+            }).mount();
+        }
+
+        function loadFeaturedProducts() {
+            const featuredProducts = [
+                {
+                    id: 'elegant-maxi-dress',
+                    name: 'Elegant Maxi Dress',
+                    category: 'Dresses',
+                    price: 299,
+                    image: 'https://kimi-web-img.moonshot.cn/img/img.freepik.com/82d920c9652766e87ec92a7a8f7135cc48e7c8c7.jpg',
+                    description: 'Flowing silk maxi dress perfect for special occasions'
+                },
+                {
+                    id: 'luxury-tote-bag',
+                    name: 'Luxury Tote Bag',
+                    category: 'Handbags',
+                    price: 459,
+                    image: 'https://kimi-web-img.moonshot.cn/img/www.photigy.com/ba2f241897f3be90e0fe732bbb319bf46c01267d.jpg',
+                    description: 'Premium leather tote with sophisticated hardware'
+                },
+                {
+                    id: 'cashmere-blazer',
+                    name: 'Cashmere Blazer',
+                    category: 'Outerwear',
+                    price: 599,
+                    image: 'https://kimi-web-img.moonshot.cn/img/media.istockphoto.com/e037b1c914af3468e1938e79c6b3273dde643531.jpg',
+                    description: 'Luxurious cashmere blazer for refined elegance'
+                },
+                {
+                    id: 'silk-blouse',
+                    name: 'Silk Blouse',
+                    category: 'Tops',
+                    price: 189,
+                    image: 'https://kimi-web-img.moonshot.cn/img/cdn.fstoppers.com/3fdb6e4ebe1e7182a5d2950aa9eb4d2b25d02f96.jpg',
+                    description: 'Elegant silk blouse with modern tailoring'
+                },
+                {
+                    id: 'crossbody-bag',
+                    name: 'Crossbody Bag',
+                    category: 'Handbags',
+                    price: 329,
+                    image: 'https://kimi-web-img.moonshot.cn/img/perfect-studio.in/e2fd81e8472b238157e9bdd5f04505d73dd31eb0.webp',
+                    description: 'Versatile crossbody bag for everyday elegance'
+                },
+                {
+                    id: 'wide-leg-trousers',
+                    name: 'Wide-Leg Trousers',
+                    category: 'Bottoms',
+                    price: 249,
+                    image: 'https://kimi-web-img.moonshot.cn/img/images.squarespace-cdn.com/ef093675583c719b10907a0dc884ead0a96fdf35.jpg',
+                    description: 'Modern wide-leg trousers with perfect drape'
+                }
+            ];
+
+            const productsContainer = document.getElementById('featuredProducts');
+            
+            featuredProducts.forEach(product => {
+                const productCard = createProductCard(product);
+                productsContainer.appendChild(productCard);
+            });
+        }
+
+        function createProductCard(product) {
+            const li = document.createElement('li');
+            li.className = 'splide__slide';
+            
+            li.innerHTML = `
+                <div class="product-card">
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-category">${product.category}</p>
+                        <p class="product-price">$${product.price}</p>
+                        <button class="add-to-cart" onclick="addToCart('${product.id}')">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return li;
+        }
+
+        function addToCart(productId) {
+            // Get product details
+            const product = getProductById(productId);
+            if (!product) return;
+
+            // Add to cart logic (from main.js)
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: 1
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            
+            // Show success feedback
+            showNotification('Added to cart!', 'success');
+        }
+
+        function getProductById(id) {
+            const products = [
+                {
+                    id: 'elegant-maxi-dress',
+                    name: 'Elegant Maxi Dress',
+                    price: 299,
+                    image: 'https://kimi-web-img.moonshot.cn/img/img.freepik.com/82d920c9652766e87ec92a7a8f7135cc48e7c8c7.jpg'
+                },
+                {
+                    id: 'luxury-tote-bag',
+                    name: 'Luxury Tote Bag',
+                    price: 459,
+                    image: 'https://kimi-web-img.moonshot.cn/img/www.photigy.com/ba2f241897f3be90e0fe732bbb319bf46c01267d.jpg'
+                },
+                {
+                    id: 'cashmere-blazer',
+                    name: 'Cashmere Blazer',
+                    price: 599,
+                    image: 'https://kimi-web-img.moonshot.cn/img/media.istockphoto.com/e037b1c914af3468e1938e79c6b3273dde643531.jpg'
+                },
+                {
+                    id: 'silk-blouse',
+                    name: 'Silk Blouse',
+                    price: 189,
+                    image: 'https://kimi-web-img.moonshot.cn/img/cdn.fstoppers.com/3fdb6e4ebe1e7182a5d2950aa9eb4d2b25d02f96.jpg'
+                },
+                {
+                    id: 'crossbody-bag',
+                    name: 'Crossbody Bag',
+                    price: 329,
+                    image: 'https://kimi-web-img.moonshot.cn/img/perfect-studio.in/e2fd81e8472b238157e9bdd5f04505d73dd31eb0.webp'
+                },
+                {
+                    id: 'wide-leg-trousers',
+                    name: 'Wide-Leg Trousers',
+                    price: 249,
+                    image: 'https://kimi-web-img.moonshot.cn/img/images.squarespace-cdn.com/ef093675583c719b10907a0dc884ead0a96fdf35.jpg'
+                }
+            ];
+            
+            return products.find(p => p.id === id);
+        }
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalItems;
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: ${type === 'success' ? 'var(--burgundy)' : 'var(--charcoal)'};
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 8px;
+                z-index: 10000;
+                font-weight: 500;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Newsletter form
+        document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            showNotification('Thank you for subscribing!', 'success');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - ATELIER LUXE | Premium Women's Fashion</title>
+    <meta name="description" content="Browse our curated collection of luxury women's clothing, handbags, and accessories. Filter by category, price, and style.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ivory: #F8F6F0;
+            --charcoal: #2C2C2C;
+            --burgundy: #8B2635;
+            --taupe: #D4C4B0;
+            --white: #FFFFFF;
+            --shadow: rgba(44, 44, 44, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--ivory);
+            color: var(--charcoal);
+            line-height: 1.6;
+            padding-top: 80px;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(248, 246, 240, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--charcoal);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--charcoal);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--burgundy);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--burgundy);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .cart-icon {
+            position: relative;
+            background: var(--burgundy);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .cart-icon:hover {
+            background: var(--charcoal);
+            transform: translateY(-2px);
+        }
+
+        .cart-count {
+            background: var(--white);
+            color: var(--burgundy);
+            border-radius: 50%;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 3rem;
+        }
+
+        /* Filters Sidebar */
+        .filters-sidebar {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            height: fit-content;
+            box-shadow: 0 4px 20px var(--shadow);
+            position: sticky;
+            top: 100px;
+        }
+
+        .filters-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: var(--charcoal);
+        }
+
+        .filter-group {
+            margin-bottom: 2rem;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--charcoal);
+            display: block;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-option input[type="checkbox"] {
+            accent-color: var(--burgundy);
+        }
+
+        .filter-option label {
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .price-range {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .price-inputs {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .price-input {
+            width: 80px;
+            padding: 0.5rem;
+            border: 1px solid var(--taupe);
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .clear-filters {
+            background: var(--burgundy);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .clear-filters:hover {
+            background: var(--charcoal);
+        }
+
+        /* Products Area */
+        .products-area {
+            min-height: 600px;
+        }
+
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .products-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--charcoal);
+        }
+
+        .search-sort-container {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-box {
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--taupe);
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 250px;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--burgundy);
+        }
+
+        .sort-select {
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--taupe);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--white);
+            cursor: pointer;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px var(--shadow);
+        }
+
+        .product-image-container {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4/5;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .quick-view {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--burgundy);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+
+        .product-card:hover .quick-view {
+            bottom: 20px;
+            opacity: 1;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--charcoal);
+        }
+
+        .product-category {
+            color: var(--burgundy);
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-description {
+            font-size: 0.9rem;
+            color: var(--charcoal);
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--charcoal);
+            margin-bottom: 1rem;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .add-to-cart {
+            flex: 1;
+            background: var(--burgundy);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background: var(--charcoal);
+            transform: translateY(-2px);
+        }
+
+        .wishlist-btn {
+            background: var(--taupe);
+            color: var(--charcoal);
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 48px;
+        }
+
+        .wishlist-btn:hover {
+            background: var(--burgundy);
+            color: var(--white);
+        }
+
+        /* Loading and Empty States */
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: var(--charcoal);
+            opacity: 0.6;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            color: var(--charcoal);
+            opacity: 0.6;
+        }
+
+        .empty-state h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 12px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--taupe);
+            color: var(--charcoal);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .modal-product {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .modal-details h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--charcoal);
+        }
+
+        .modal-price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--burgundy);
+            margin-bottom: 1rem;
+        }
+
+        .modal-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: var(--charcoal);
+            opacity: 0.8;
+        }
+
+        .size-selector, .color-selector {
+            margin-bottom: 1.5rem;
+        }
+
+        .selector-label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .selector-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .size-option, .color-option {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--taupe);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .size-option:hover, .color-option:hover {
+            border-color: var(--burgundy);
+        }
+
+        .size-option.selected, .color-option.selected {
+            background: var(--burgundy);
+            color: var(--white);
+            border-color: var(--burgundy);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .modal-add-to-cart {
+            flex: 1;
+            background: var(--burgundy);
+            color: var(--white);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .modal-add-to-cart:hover {
+            background: var(--charcoal);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .filters-sidebar {
+                position: static;
+            }
+
+            .products-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-sort-container {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .search-box, .sort-select {
+                width: 100%;
+            }
+
+            .modal-product {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .products-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .product-card {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">ATELIER LUXE</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html" class="active">Products</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="admin.html">Admin</a></li>
+            </ul>
+            <a href="cart.html" class="cart-icon">
+                Cart <span class="cart-count" id="cartCount">0</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Filters Sidebar -->
+        <aside class="filters-sidebar">
+            <h2 class="filters-title">Filters</h2>
+            
+            <!-- Category Filter -->
+            <div class="filter-group">
+                <label class="filter-label">Category</label>
+                <div class="filter-options" id="categoryFilters">
+                    <div class="filter-option">
+                        <input type="checkbox" id="dresses" value="dresses">
+                        <label for="dresses">Dresses</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="tops" value="tops">
+                        <label for="tops">Tops</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="bottoms" value="bottoms">
+                        <label for="bottoms">Bottoms</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="bags" value="bags">
+                        <label for="bags">Handbags</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="outerwear" value="outerwear">
+                        <label for="outerwear">Outerwear</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="accessories" value="accessories">
+                        <label for="accessories">Accessories</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Price Range Filter -->
+            <div class="filter-group">
+                <label class="filter-label">Price Range</label>
+                <div class="price-range">
+                    <div class="price-inputs">
+                        <input type="number" class="price-input" id="minPrice" placeholder="Min" min="0">
+                        <span>-</span>
+                        <input type="number" class="price-input" id="maxPrice" placeholder="Max" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Color Filter -->
+            <div class="filter-group">
+                <label class="filter-label">Color</label>
+                <div class="filter-options" id="colorFilters">
+                    <div class="filter-option">
+                        <input type="checkbox" id="black" value="black">
+                        <label for="black">Black</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="white" value="white">
+                        <label for="white">White</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="cream" value="cream">
+                        <label for="cream">Cream</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="burgundy" value="burgundy">
+                        <label for="burgundy">Burgundy</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="brown" value="brown">
+                        <label for="brown">Brown</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="navy" value="navy">
+                        <label for="navy">Navy</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Size Filter -->
+            <div class="filter-group">
+                <label class="filter-label">Size</label>
+                <div class="filter-options" id="sizeFilters">
+                    <div class="filter-option">
+                        <input type="checkbox" id="xs" value="XS">
+                        <label for="xs">XS</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="s" value="S">
+                        <label for="s">S</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="m" value="M">
+                        <label for="m">M</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="l" value="L">
+                        <label for="l">L</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="xl" value="XL">
+                        <label for="xl">XL</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="clear-filters" onclick="clearAllFilters()">Clear All Filters</button>
+        </aside>
+
+        <!-- Products Area -->
+        <main class="products-area">
+            <div class="products-header">
+                <h1 class="products-title">Our Collection</h1>
+                <div class="search-sort-container">
+                    <input type="text" class="search-box" id="searchBox" placeholder="Search products...">
+                    <select class="sort-select" id="sortSelect">
+                        <option value="featured">Featured</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="newest">Newest First</option>
+                        <option value="name">Name A-Z</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <div class="loading">Loading products...</div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="modal-product" id="modalProduct">
+                <!-- Modal content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        let allProducts = [];
+        let filteredProducts = [];
+        let currentFilters = {
+            categories: [],
+            colors: [],
+            sizes: [],
+            minPrice: null,
+            maxPrice: null,
+            search: ''
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+            initializeFilters();
+            updateCartCount();
+        });
+
+        function loadProducts() {
+            allProducts = [
+                {
+                    id: 'elegant-maxi-dress',
+                    name: 'Elegant Maxi Dress',
+                    category: 'dresses',
+                    price: 299,
+                    originalPrice: 399,
+                    image: 'https://kimi-web-img.moonshot.cn/img/img.freepik.com/82d920c9652766e87ec92a7a8f7135cc48e7c8c7.jpg',
+                    description: 'Flowing silk maxi dress with elegant drape and modern silhouette. Perfect for special occasions and evening events.',
+                    colors: ['black', 'cream', 'burgundy'],
+                    sizes: ['XS', 'S', 'M', 'L'],
+                    inStock: true,
+                    featured: true,
+                    newArrival: false
+                },
+                {
+                    id: 'luxury-tote-bag',
+                    name: 'Luxury Tote Bag',
+                    category: 'bags',
+                    price: 459,
+                    originalPrice: 459,
+                    image: 'https://kimi-web-img.moonshot.cn/img/www.photigy.com/ba2f241897f3be90e0fe732bbb319bf46c01267d.jpg',
+                    description: 'Premium leather tote with sophisticated hardware and spacious interior. A timeless investment piece.',
+                    colors: ['black', 'brown', 'cream'],
+                    sizes: ['One Size'],
+                    inStock: true,
+                    featured: true,
+                    newArrival: true
+                },
+                {
+                    id: 'cashmere-blazer',
+                    name: 'Cashmere Blazer',
+                    category: 'outerwear',
+                    price: 599,
+                    originalPrice: 799,
+                    image: 'https://kimi-web-img.moonshot.cn/img/media.istockphoto.com/e037b1c914af3468e1938e79c6b3273dde643531.jpg',
+                    description: 'Luxurious cashmere blazer with impeccable tailoring. The epitome of refined elegance for professional settings.',
+                    colors: ['black', 'navy', 'cream'],
+                    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+                    inStock: true,
+                    featured: true,
+                    newArrival: false
+                },
+                {
+                    id: 'silk-blouse',
+                    name: 'Silk Blouse',
+                    category: 'tops',
+                    price: 189,
+                    originalPrice: 189,
+                    image: 'https://kimi-web-img.moonshot.cn/img/cdn.fstoppers.com/3fdb6e4ebe1e7182a5d2950aa9eb4d2b25d02f96.jpg',
+                    description: 'Elegant silk blouse with modern tailoring and luxurious feel. Perfect for both office and evening wear.',
+                    colors: ['white', 'cream', 'black'],
+                    sizes: ['XS', 'S', 'M', 'L'],
+                    inStock: true,
+                    featured: false,
+                    newArrival: true
+                },
+                {
+                    id: 'crossbody-bag',
+                    name: 'Crossbody Bag',
+                    category: 'bags',
+                    price: 329,
+                    originalPrice: 329,
+                    image: 'https://kimi-web-img.moonshot.cn/img/perfect-studio.in/e2fd81e8472b238157e9bdd5f04505d73dd31eb0.webp',
+                    description: 'Versatile crossbody bag with adjustable strap and multiple compartments. Perfect for hands-free elegance.',
+                    colors: ['black', 'brown', 'burgundy'],
+                    sizes: ['One Size'],
+                    inStock: true,
+                    featured: false,
+                    newArrival: false
+                },
+                {
+                    id: 'wide-leg-trousers',
+                    name: 'Wide-Leg Trousers',
+                    category: 'bottoms',
+                    price: 249,
+                    originalPrice: 249,
+                    image: 'https://kimi-web-img.moonshot.cn/img/images.squarespace-cdn.com/ef093675583c719b10907a0dc884ead0a96fdf35.jpg',
+                    description: 'Modern wide-leg trousers with perfect drape and comfortable fit. A wardrobe essential for sophisticated style.',
+                    colors: ['black', 'navy', 'cream'],
+                    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+                    inStock: true,
+                    featured: false,
+                    newArrival: true
+                },
+                {
+                    id: 'evening-clutch',
+                    name: 'Evening Clutch',
+                    category: 'bags',
+                    price: 189,
+                    originalPrice: 189,
+                    image: 'https://kimi-web-img.moonshot.cn/img/img.freepik.com/7453810101d6edfd5fa16db8517a504c0235b362.jpg',
+                    description: 'Elegant evening clutch with metallic accents and chain strap. Perfect for special occasions.',
+                    colors: ['black', 'gold', 'silver'],
+                    sizes: ['One Size'],
+                    inStock: true,
+                    featured: false,
+                    newArrival: false
+                },
+                {
+                    id: 'peplum-blouse',
+                    name: 'Peplum Blouse',
+                    category: 'tops',
+                    price: 159,
+                    originalPrice: 159,
+                    image: 'https://kimi-web-img.moonshot.cn/img/www.simplifiedbuilding.com/63963a882277564743839d4647e76d919b2ffdca.jpeg',
+                    description: 'Feminine peplum blouse with flattering silhouette and premium fabric. Ideal for professional settings.',
+                    colors: ['white', 'black', 'navy'],
+                    sizes: ['XS', 'S', 'M', 'L'],
+                    inStock: true,
+                    featured: false,
+                    newArrival: false
+                },
+                {
+                    id: 'structured-blazer',
+                    name: 'Structured Blazer',
+                    category: 'outerwear',
+                    price: 389,
+                    originalPrice: 389,
+                    image: 'https://kimi-web-img.moonshot.cn/img/phxart.org/c983f34241ae469f72c2ae7c49ef23b69ec0970c.jpg',
+                    description: 'Sharp structured blazer with modern cut and premium wool blend. Essential for professional wardrobe.',
+                    colors: ['black', 'navy', 'gray'],
+                    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+                    inStock: true,
+                    featured: false,
+                    newArrival: true
+                },
+                {
+                    id: 'midi-skirt',
+                    name: 'Midi Skirt',
+                    category: 'bottoms',
+                    price: 199,
+                    originalPrice: 199,
+                    image: 'https://kimi-web-img.moonshot.cn/img/luxuryboutique.ae/0d7b911f12609a14593cb6fa7af92d5785a22e60.jpg',
+                    description: 'Elegant midi skirt with flowing silhouette and comfortable waistband. Versatile piece for any season.',
+                    colors: ['black', 'cream', 'burgundy'],
+                    sizes: ['XS', 'S', 'M', 'L'],
+                    inStock: true,
+                    featured: false,
+                    newArrival: false
+                },
+                {
+                    id: 'oversized-cardigan',
+                    name: 'Oversized Cardigan',
+                    category: 'outerwear',
+                    price: 279,
+                    originalPrice: 279,
+                    image: 'https://kimi-web-img.moonshot.cn/img/www.pursebop.com/3c78af67f9420c61dcd55083e6f1ae2f98b8bafc.jpeg',
+                    description: 'Cozy oversized cardigan in premium knit. Perfect layering piece for transitional seasons.',
+                    colors: ['cream', 'brown', 'gray'],
+                    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+                    inStock: true,
+                    featured: false,
+                    newArrival: true
+                },
+                {
+                    id: 'silk-scarf',
+                    name: 'Silk Scarf',
+                    category: 'accessories',
+                    price: 89,
+                    originalPrice: 89,
+                    image: 'https://kimi-web-img.moonshot.cn/img/m.media-amazon.com/474187a9411592bdf826e51f39c3fa40a662844a.jpg',
+                    description: 'Luxurious silk scarf with artistic print. Perfect accessory to elevate any outfit.',
+                    colors: ['multicolor', 'black', 'cream'],
+                    sizes: ['One Size'],
+                    inStock: true,
+                    featured: false,
+                    newArrival: false
+                }
+            ];
+
+            filteredProducts = [...allProducts];
+            renderProducts();
+        }
+
+        function initializeFilters() {
+            // Category filters
+            document.querySelectorAll('#categoryFilters input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', applyFilters);
+            });
+
+            // Color filters
+            document.querySelectorAll('#colorFilters input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', applyFilters);
+            });
+
+            // Size filters
+            document.querySelectorAll('#sizeFilters input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', applyFilters);
+            });
+
+            // Price range
+            document.getElementById('minPrice').addEventListener('input', applyFilters);
+            document.getElementById('maxPrice').addEventListener('input', applyFilters);
+
+            // Search
+            document.getElementById('searchBox').addEventListener('input', function(e) {
+                currentFilters.search = e.target.value.toLowerCase();
+                applyFilters();
+            });
+
+            // Sort
+            document.getElementById('sortSelect').addEventListener('change', function(e) {
+                sortProducts(e.target.value);
+            });
+        }
+
+        function applyFilters() {
+            // Get filter values
+            currentFilters.categories = Array.from(document.querySelectorAll('#categoryFilters input:checked')).map(cb => cb.value);
+            currentFilters.colors = Array.from(document.querySelectorAll('#colorFilters input:checked')).map(cb => cb.value);
+            currentFilters.sizes = Array.from(document.querySelectorAll('#sizeFilters input:checked')).map(cb => cb.value);
+            currentFilters.minPrice = parseFloat(document.getElementById('minPrice').value) || null;
+            currentFilters.maxPrice = parseFloat(document.getElementById('maxPrice').value) || null;
+
+            // Apply filters
+            filteredProducts = allProducts.filter(product => {
+                // Category filter
+                if (currentFilters.categories.length > 0 && !currentFilters.categories.includes(product.category)) {
+                    return false;
+                }
+
+                // Color filter
+                if (currentFilters.colors.length > 0 && !currentFilters.colors.some(color => product.colors.includes(color))) {
+                    return false;
+                }
+
+                // Size filter
+                if (currentFilters.sizes.length > 0 && !currentFilters.sizes.some(size => product.sizes.includes(size))) {
+                    return false;
+                }
+
+                // Price filter
+                if (currentFilters.minPrice && product.price < currentFilters.minPrice) {
+                    return false;
+                }
+                if (currentFilters.maxPrice && product.price > currentFilters.maxPrice) {
+                    return false;
+                }
+
+                // Search filter
+                if (currentFilters.search && !product.name.toLowerCase().includes(currentFilters.search)) {
+                    return false;
+                }
+
+                return true;
+            });
+
+            renderProducts();
+        }
+
+        function sortProducts(sortBy) {
+            switch (sortBy) {
+                case 'price-low':
+                    filteredProducts.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    filteredProducts.sort((a, b) => b.price - a.price);
+                    break;
+                case 'newest':
+                    filteredProducts.sort((a, b) => b.newArrival - a.newArrival);
+                    break;
+                case 'name':
+                    filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                case 'featured':
+                default:
+                    filteredProducts.sort((a, b) => b.featured - a.featured);
+                    break;
+            }
+            renderProducts();
+        }
+
+        function clearAllFilters() {
+            // Clear all checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            
+            // Clear price inputs
+            document.getElementById('minPrice').value = '';
+            document.getElementById('maxPrice').value = '';
+            
+            // Clear search
+            document.getElementById('searchBox').value = '';
+            
+            // Reset filters
+            currentFilters = {
+                categories: [],
+                colors: [],
+                sizes: [],
+                minPrice: null,
+                maxPrice: null,
+                search: ''
+            };
+            
+            filteredProducts = [...allProducts];
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            
+            if (filteredProducts.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No products found</h3>
+                        <p>Try adjusting your filters or search terms</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filteredProducts.map((product, index) => `
+                <div class="product-card" style="animation-delay: ${index * 0.1}s">
+                    <div class="product-image-container">
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                        <button class="quick-view" onclick="openModal('${product.id}')">Quick View</button>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</div>
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-description">${product.description.substring(0, 80)}...</p>
+                        <div class="product-price">
+                            $${product.price}
+                            ${product.originalPrice > product.price ? `<span style="text-decoration: line-through; opacity: 0.6; margin-left: 0.5rem; font-size: 1rem;">$${product.originalPrice}</span>` : ''}
+                        </div>
+                        <div class="product-actions">
+                            <button class="add-to-cart" onclick="addToCart('${product.id}')">Add to Cart</button>
+                            <button class="wishlist-btn" onclick="toggleWishlist('${product.id}')">♡</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openModal(productId) {
+            const product = allProducts.find(p => p.id === productId);
+            if (!product) return;
+
+            const modal = document.getElementById('productModal');
+            const modalProduct = document.getElementById('modalProduct');
+            
+            modalProduct.innerHTML = `
+                <img src="${product.image}" alt="${product.name}" class="modal-image">
+                <div class="modal-details">
+                    <h3>${product.name}</h3>
+                    <div class="modal-price">$${product.price}</div>
+                    <p class="modal-description">${product.description}</p>
+                    
+                    <div class="color-selector">
+                        <label class="selector-label">Color</label>
+                        <div class="selector-options">
+                            ${product.colors.map(color => `
+                                <div class="color-option" onclick="selectOption(this, 'color')">${color}</div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="size-selector">
+                        <label class="selector-label">Size</label>
+                        <div class="selector-options">
+                            ${product.sizes.map(size => `
+                                <div class="size-option" onclick="selectOption(this, 'size')">${size}</div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button class="modal-add-to-cart" onclick="addToCartFromModal('${product.id}')">
+                            Add to Cart - $${product.price}
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('productModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function selectOption(element, type) {
+            // Remove selected class from siblings
+            element.parentNode.querySelectorAll(`.${type}-option`).forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked element
+            element.classList.add('selected');
+        }
+
+        function addToCart(productId) {
+            const product = allProducts.find(p => p.id === productId);
+            if (!product) return;
+
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: 1
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            showNotification('Added to cart!', 'success');
+        }
+
+        function addToCartFromModal(productId) {
+            const selectedColor = document.querySelector('.color-option.selected');
+            const selectedSize = document.querySelector('.size-option.selected');
+            
+            if (!selectedColor || !selectedSize) {
+                showNotification('Please select color and size', 'error');
+                return;
+            }
+            
+            addToCart(productId);
+            closeModal();
+        }
+
+        function toggleWishlist(productId) {
+            showNotification('Added to wishlist!', 'success');
+        }
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalItems;
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: ${type === 'success' ? 'var(--burgundy)' : type === 'error' ? '#dc3545' : 'var(--charcoal)'};
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 8px;
+                z-index: 10000;
+                font-weight: 500;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('productModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
